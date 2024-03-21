@@ -30,3 +30,40 @@ function blockify_styles() {
 
 
 add_action( 'wp_enqueue_scripts', 'blockify_styles' );
+
+
+function prefix_default_page_template( $settings ) {
+	$settings['defaultBlockTemplate'] = '
+	<!-- wp:template-part {"slug":"header","theme":"theme-slug","tagName":"header"} /-->
+		<!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->
+		<main class="wp-block-group">
+		<!-- wp:post-title /-->
+		<!-- wp:post-content /-->
+		</main>
+		<!-- /wp:group -->
+	<!-- wp:template-part {"slug":"footer","theme":"theme-slug","tagName":"footer"} /-->';
+	return $settings;
+}
+add_filter( 'block_editor_settings_all', 'prefix_default_page_template' );
+
+function myplugin_register_book_post_type() {
+	$args = array(
+		'public' => true,
+		'label'  => 'Books ddd',
+		'show_in_rest' => true,
+		'template' => array(
+			array( 'core/columns', array(), array(
+				array( 'core/column', array(), array(
+					array( 'core/image', array() ),
+				) ),
+				array( 'core/column', array(), array(
+					array( 'core/paragraph', array(
+						'placeholder' => 'Add a inner paragraph'
+					) ),
+				) ),
+			) )
+		),
+	);
+	register_post_type( 'book', $args );
+}
+add_action( 'init', 'myplugin_register_book_post_type' );
