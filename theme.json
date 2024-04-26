@@ -21,6 +21,7 @@
 		}
 	],
 	"settings": {
+		"appearanceTools": true,
 		"layout": {
 			"contentSize": "840px",
 			"wideSize": "1100px"
